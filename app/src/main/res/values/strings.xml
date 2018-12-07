@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">TeufelsTurmOffline</string>
+    <string name="tab_search">Wege Finden</string>
+    <string name="tab_favorites">Favoriten</string>
+</resources>
