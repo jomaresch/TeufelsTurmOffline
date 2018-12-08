@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.dex.teufelsturmoffline.R;
 import com.dex.teufelsturmoffline.activities.CommentActivity;
 import com.dex.teufelsturmoffline.adapter.RouteRecycleAdapter;
+import com.dex.teufelsturmoffline.database.DatabaseHelper;
 import com.dex.teufelsturmoffline.model.Route;
 
 import java.util.ArrayList;
@@ -23,6 +24,8 @@ public class FavoritesViewFragment extends Fragment {
 
     RecyclerView recyclerView;
     View view;
+    DatabaseHelper db;
+    RouteRecycleAdapter routeRecycleAdapter;
 
     public FavoritesViewFragment() {
     }
@@ -37,11 +40,12 @@ public class FavoritesViewFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_favorites_view, container, false);
         recyclerView = view.findViewById(R.id.recyclerView_routes);
 
-        List<Route> routeList = new ArrayList<>();
+        db = new DatabaseHelper(getContext());
+        List<Route> routeList = db.getFavRoutes();
 
         LinearLayoutManager mLinearLayoutManager = new LinearLayoutManager(getActivity(),
                 LinearLayoutManager.VERTICAL, false);
-        RouteRecycleAdapter routeRecycleAdapter = new RouteRecycleAdapter(getActivity(), routeList, new RouteRecycleAdapter.OnItemClickListener() {
+        routeRecycleAdapter = new RouteRecycleAdapter(getActivity(), routeList, new RouteRecycleAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(Route item) {
                 Intent intent = new Intent(getContext(), CommentActivity.class);
@@ -52,5 +56,15 @@ public class FavoritesViewFragment extends Fragment {
         recyclerView.setLayoutManager(mLinearLayoutManager);
         recyclerView.setAdapter(routeRecycleAdapter);
         return view;
+    }
+
+    @Override
+    public void onResume()
+    {  // After a pause OR at startup
+        super.onResume();
+        if(db == null){
+            db = new DatabaseHelper(getContext());
+        }
+        routeRecycleAdapter.updateData(db.getFavRoutes());
     }
 }

@@ -5,6 +5,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,6 +27,22 @@ public class CommentActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     Route route;
     List<Comment> commentList;
+
+    private Menu menu;
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        getMenuInflater().inflate(R.menu.menu_fav,menu);
+        this.menu = menu;
+        if(route.getFav() == 1){
+            setFavorite(true, false);
+        } else {
+            setFavorite(false, false);
+        }
+
+        return true;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,13 +74,42 @@ public class CommentActivity extends AppCompatActivity {
                 this,
                 commentList,
                 new CommentRecycleAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(Comment item) {
-                Toast.makeText(getApplicationContext(), "OK" + item.getName(),Toast.LENGTH_SHORT).show();
-            }
-        });
+                    @Override
+                    public void onItemClick(Comment item) {}
+                });
 
         recyclerView.setLayoutManager(mLinearLayoutManager);
         recyclerView.setAdapter(commentRecycleAdapter);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        super.onOptionsItemSelected(item);
+        if(item.getItemId() == R.id.fav_button){
+            setFavorite(!item.isChecked(),true);
+        } else {
+            return super.onOptionsItemSelected(item);
+        }
+        return true;
+    }
+
+    private void setFavorite(boolean favorite, boolean withToastAndUpdate){
+        if (favorite){
+            menu.findItem(R.id.fav_button).setChecked(true);
+            menu.findItem(R.id.fav_button).setIcon(R.drawable.ic_favorite_blk);
+
+            if (withToastAndUpdate) {
+                db.setFavorite(favorite,route.getId());
+                Toast.makeText(this,"Der Weg wurde als Favorit hinzugefügt", Toast.LENGTH_SHORT).show();
+            }
+        }
+        else {
+            menu.findItem(R.id.fav_button).setChecked(false);
+            menu.findItem(R.id.fav_button).setIcon(R.drawable.ic_favorite_border_blk);
+            if (withToastAndUpdate) {
+                db.setFavorite(favorite,route.getId());
+                Toast.makeText(this,"Der Weg wurde als Favorit entfernt", Toast.LENGTH_LONG).show();
+            }
+        }
     }
 }

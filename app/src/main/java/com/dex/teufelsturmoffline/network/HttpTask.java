@@ -36,7 +36,7 @@ public class HttpTask extends AsyncTask<Integer, ProcessUpdate, String> {
 
     Context context;
     Activity activity;
-    TextView head,sub;
+    TextView sub;
     ProgressBar progressBar;
     Button cancelButton, runButton;
     DatabaseHelper db;
@@ -50,7 +50,6 @@ public class HttpTask extends AsyncTask<Integer, ProcessUpdate, String> {
         this.progressBar = activity.findViewById(R.id.progressBar_settings);
         this.cancelButton = activity.findViewById(R.id.button_settings_cancel);
         this.runButton = activity.findViewById(R.id.button_settings_run);
-        this.head = activity.findViewById(R.id.text_settings_head);
         this.sub = activity.findViewById(R.id.text_settings_subline);
     }
 
@@ -83,6 +82,9 @@ public class HttpTask extends AsyncTask<Integer, ProcessUpdate, String> {
             }
 
             newCommentsAmount = newRouteList.size() + updateRouteList.size() - 1;
+            if(newCommentsAmount + 1 == 0){
+                return "Die Datenbank ist bereits auf dem neusten Stand";
+            }
             startProgress(newCommentsAmount);
 
             counter = 0;
@@ -100,9 +102,9 @@ public class HttpTask extends AsyncTask<Integer, ProcessUpdate, String> {
             }
 
         } catch (IOException e) {
-            e.printStackTrace();
+            return "Verbindung zu Teufelsturm.de konnte nicht hergestellt werden. Bitte prüfe deine Verbindung";
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            return "Das Update wurde abgebrochen";
         }
         return "Updates wurden erfolgreich geladen";
     }
@@ -111,7 +113,6 @@ public class HttpTask extends AsyncTask<Integer, ProcessUpdate, String> {
     protected void onCancelled(String s) {
         progressBar.setVisibility(View.INVISIBLE);
         sub.setVisibility(View.INVISIBLE);
-        head.setText("");
         cancelButton.setEnabled(false);
         runButton.setEnabled(true);
         dialog(s);
@@ -121,7 +122,6 @@ public class HttpTask extends AsyncTask<Integer, ProcessUpdate, String> {
     protected void onPostExecute(String s) {
         progressBar.setVisibility(View.INVISIBLE);
         sub.setVisibility(View.INVISIBLE);
-        head.setText("");
         cancelButton.setEnabled(false);
         runButton.setEnabled(true);
         dialog(s);
@@ -131,8 +131,8 @@ public class HttpTask extends AsyncTask<Integer, ProcessUpdate, String> {
         if(progress.length > 0){
             ProcessUpdate p = progress[0];
             if(p.firstUpdate){
-                this.head.setText(p.head);
                 this.progressBar.setMax(p.progressMax);
+                this.progressBar.setProgress(0);
             } else {
                 this.sub.setText(p.sub);
                 this.progressBar.setProgress(p.progress);

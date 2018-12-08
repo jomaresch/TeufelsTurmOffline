@@ -144,4 +144,13 @@ public class SearchViewFragment extends Fragment {
     public void resetRouteList(){
         routeRecycleAdapter.resetData();
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(db == null){
+            db = new DatabaseHelper(getContext());
+        }
+        routeRecycleAdapter.updateData(db.getRoutesByArea(spinner_area.getSelectedItem().toString()));
+    }
 }

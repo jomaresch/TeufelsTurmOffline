@@ -86,6 +86,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return commentList;
     }
 
+    public List<Route> getFavRoutes(){
+
+        List routesList = new ArrayList<Route>();
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        String sqlStatement = "SELECT * FROM "+ TABLE_ROUTES + " WHERE FAV == 1";
+        Cursor cursor = db.rawQuery(sqlStatement, null);
+
+        while(cursor.moveToNext()) {
+            Route route = getRouteFromCursor(cursor);
+            routesList.add(route);
+        }
+
+        db.close();
+        return routesList;
+    }
+
+
     public boolean addRoute(Route route){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -125,6 +143,22 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
         else{
             return true;
+        }
+    }
+
+    public void setFavorite(boolean favorite, String weg_id){
+        SQLiteDatabase db = this.getWritableDatabase();
+        if (favorite){
+
+            ContentValues contentValues = new ContentValues();
+            contentValues.put("FAV", 1);
+            db.update(TABLE_ROUTES,contentValues,"ID = '"+ weg_id+"'" ,null);
+        }
+        else {
+
+            ContentValues contentValues = new ContentValues();
+            contentValues.put("fav", 0);
+            db.update(TABLE_ROUTES,contentValues,"ID = '"+ weg_id+"'" ,null);
         }
     }
 
@@ -200,5 +234,49 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 cursor.getInt(6),
                 cursor.getInt(7)
         );
+    }
+
+    public String countRoutes(){
+        SQLiteDatabase db = this.getReadableDatabase();
+        String sqlStatement = "SELECT COUNT(ID) FROM "+ TABLE_ROUTES;
+        Cursor cursor = db.rawQuery(sqlStatement, null);
+        if(cursor.moveToFirst()){
+            return String.valueOf(cursor.getInt(0));
+        } else {
+            return "0";
+        }
+    }
+
+    public String countComments(){
+        SQLiteDatabase db = this.getReadableDatabase();
+        String sqlStatement = "SELECT COUNT(*) FROM "+ TABLE_COMMENTS;
+        Cursor cursor = db.rawQuery(sqlStatement, null);
+        if(cursor.moveToFirst()){
+            return String.valueOf(cursor.getInt(0));
+        } else {
+            return "0";
+        }
+    }
+
+    public String countMountain(){
+        SQLiteDatabase db = this.getReadableDatabase();
+        String sqlStatement = "SELECT COUNT(distinct MOUNTAIN) FROM "+ TABLE_ROUTES;
+        Cursor cursor = db.rawQuery(sqlStatement, null);
+        if(cursor.moveToFirst()){
+            return String.valueOf(cursor.getInt(0));
+        } else {
+            return "0";
+        }
+    }
+
+    public String getLastCommentDate(){
+        SQLiteDatabase db = this.getReadableDatabase();
+        String sqlStatement = "SELECT DATE FROM "+TABLE_COMMENTS+" ORDER BY DATE DESC";
+        Cursor cursor = db.rawQuery(sqlStatement, null);
+        if(cursor.moveToFirst()){
+            return cursor.getString(0);
+        } else {
+            return "";
+        }
     }
 }
