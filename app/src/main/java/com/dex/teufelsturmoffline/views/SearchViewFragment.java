@@ -24,6 +24,7 @@ import com.dex.teufelsturmoffline.activities.CommentActivity;
 import com.dex.teufelsturmoffline.adapter.RouteRecycleAdapter;
 import com.dex.teufelsturmoffline.adapter.SpinnerAreaAdapter;
 import com.dex.teufelsturmoffline.database.DatabaseHelper;
+import com.dex.teufelsturmoffline.database.SettingsSaver;
 import com.dex.teufelsturmoffline.model.AreaSpinnerData;
 import com.dex.teufelsturmoffline.model.Route;
 
@@ -62,7 +63,7 @@ public class SearchViewFragment extends Fragment {
 
             @Override
             public boolean onQueryTextSubmit(String query) {
-                if(query == "")
+                if(query.equals(""))
                     resetRouteList();
                 else
                     filterRouteList(query);
@@ -70,7 +71,7 @@ public class SearchViewFragment extends Fragment {
             }
             @Override
             public boolean onQueryTextChange(String s) {
-                if(s == "")
+                if(s.equals(""))
                     resetRouteList();
                 else
                     filterRouteList(s);
@@ -101,6 +102,7 @@ public class SearchViewFragment extends Fragment {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 updateRouteList(parent.getItemAtPosition(position).toString());
                 searchView.onActionViewCollapsed();
+                SettingsSaver.setArea(getActivity(), position);
             }
 
             @Override
@@ -108,7 +110,7 @@ public class SearchViewFragment extends Fragment {
 
             }
         });
-
+        spinner_area.setSelection(SettingsSaver.getArea(getActivity()));
 
         List<Route> routeList = new ArrayList<>();
         if(spinnerData.size() > 0 ){
@@ -148,9 +150,10 @@ public class SearchViewFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        if(db == null){
-            db = new DatabaseHelper(getContext());
-        }
-        routeRecycleAdapter.updateData(db.getRoutesByArea(spinner_area.getSelectedItem().toString()));
+        recyclerView.requestFocus();
+//        if(db == null){
+//            db = new DatabaseHelper(getContext());
+//        }
+//        routeRecycleAdapter.updateData(db.getRoutesByArea(spinner_area.getSelectedItem().toString()));
     }
 }
