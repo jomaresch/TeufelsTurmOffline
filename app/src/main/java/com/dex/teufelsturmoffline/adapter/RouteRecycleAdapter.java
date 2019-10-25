@@ -14,9 +14,7 @@ import com.dex.teufelsturmoffline.R;
 import com.dex.teufelsturmoffline.model.ModelHelper;
 import com.dex.teufelsturmoffline.model.Route;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -79,10 +77,10 @@ public class RouteRecycleAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 rvh.routeScale.setText("Skala: "+ filteredRouteList.get(i).second.getScale());
                 rvh.routeMountain.setText( "Gipfel: "+ filteredRouteList.get(i).second.getMountain());
                 rvh.imageRating.setImageResource(ModelHelper.convertRatingToImage(filteredRouteList.get(i).second.getRating()));
-                if(filteredRouteList.get(i).second.getFav() == 1){
-                    rvh.imageFav.setImageResource(R.drawable.ic_favorite_blk);
+                if(filteredRouteList.get(i).second.getDone() == 1){
+                    rvh.imageDone.setImageResource(R.drawable.check_solid);
                 } else {
-                    rvh.imageFav.setImageResource(R.drawable.ic_favorite_border_blk);
+                    rvh.imageDone.setImageResource(android.R.color.transparent);
                 }
                 rvh.bind(filteredRouteList.get(i).second,listener);
                 break;
@@ -99,14 +97,14 @@ public class RouteRecycleAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     class RouteRecycleViewHolder extends RecyclerView.ViewHolder {
 
         TextView routeName, routeScale, routeMountain;
-        ImageView imageRating, imageFav;
+        ImageView imageRating, imageDone;
 
         public RouteRecycleViewHolder(@NonNull View itemView) {
             super(itemView);
             routeName = itemView.findViewById(R.id.text_comment_row_user_name);
             routeScale = itemView.findViewById(R.id.text_route_row_scale);
             routeMountain = itemView.findViewById(R.id.text_comment_row_date);
-            imageFav = itemView.findViewById(R.id.image_route_row_fav);
+            imageDone = itemView.findViewById(R.id.image_route_row_done);
             imageRating = itemView.findViewById(R.id.image_route_rating_row_route);
         }
 

@@ -2,7 +2,7 @@ package com.dex.teufelsturmoffline.model;
 
 public class Route implements Comparable<Route>{
     private String name, id, mountain, scale, area, date;
-    private int rating, fav;
+    private int rating, fav, done;
 
     public String getName() {
         return name;
@@ -60,7 +60,15 @@ public class Route implements Comparable<Route>{
         this.rating = rating;
     }
 
-    public Route(String name, String id, String mountain, String scale, String area, String date, int rating, int fav) {
+    public int getDone() {
+        return done;
+    }
+
+    public void setDone(int done) {
+        this.done = done;
+    }
+
+    public Route(String name, String id, String mountain, String scale, String area, String date, int rating, int fav, int done) {
         this.name = name;
         this.id = id;
         this.mountain = mountain;
@@ -69,6 +77,7 @@ public class Route implements Comparable<Route>{
         this.date = date;
         this.rating = rating;
         this.fav = fav;
+        this.done = done;
     }
 
     public Route() {
@@ -86,8 +95,11 @@ public class Route implements Comparable<Route>{
 
                 ", rating=" + rating +
                 ", fav=" + fav +
+                ", done=" + done +
                 '}';
     }
+
+
 
     public int getFav() {
         return fav;

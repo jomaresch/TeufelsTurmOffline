@@ -19,6 +19,7 @@ import com.dex.teufelsturmoffline.adapter.SpinnerAreaAdapter;
 import com.dex.teufelsturmoffline.adapter.ViewPagerAdapter;
 import com.dex.teufelsturmoffline.database.DatabaseHelper;
 import com.dex.teufelsturmoffline.model.AreaSpinnerData;
+import com.dex.teufelsturmoffline.views.DoneViewFragment;
 import com.dex.teufelsturmoffline.views.FavoritesViewFragment;
 import com.dex.teufelsturmoffline.views.SearchViewFragment;
 
@@ -30,7 +31,9 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener {
+
+    SearchViewFragment searchViewFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,10 +48,12 @@ public class MainActivity extends AppCompatActivity {
         ViewPager viewPager = findViewById(R.id.pager);
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
 
-
-        adapter.addFragment(new SearchViewFragment(), getString(R.string.tab_search));
+        searchViewFragment = new SearchViewFragment();
+        adapter.addFragment(searchViewFragment, getString(R.string.tab_search));
         adapter.addFragment(new FavoritesViewFragment(), getString(R.string.tab_favorites));
+        adapter.addFragment(new DoneViewFragment(), getString(R.string.tab_done));
         viewPager.setAdapter(adapter);
+        viewPager.addOnPageChangeListener(this);
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
@@ -97,4 +102,17 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(context, "Error while copy DB", Toast.LENGTH_SHORT).show();
         }
     }
+
+    @Override
+    public void onPageScrolled(int i, float v, int i1) {}
+
+    @Override
+    public void onPageSelected(int i) {
+        if (i == 0){
+            searchViewFragment.resetRouteList();
+        }
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int i) {}
 }

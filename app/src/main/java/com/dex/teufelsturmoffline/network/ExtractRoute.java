@@ -52,7 +52,7 @@ public class ExtractRoute {
             scale = parseScale(element.child(4).child(0).text());
             area = element.child(5).child(0).text();
             date = parseDate(element.child(6).child(0).text());
-            Route route = new Route(name,id,mountain,scale,area,date, rating,0);
+            Route route = new Route(name,id,mountain,scale,area,date, rating,0,0);
             routeList.add(route);
         }
         return routeList;

@@ -28,7 +28,7 @@ import java.net.URL;
 public class SettingsActivity extends AppCompatActivity {
 
     private HttpTask httpTask;
-    private final int NUMBER_ROUTES = 100;
+    private final int NUMBER_ROUTES = 200;
     private ImageView infoIcon;
     private TextView infoTextIcon;
     private DatabaseHelper db;

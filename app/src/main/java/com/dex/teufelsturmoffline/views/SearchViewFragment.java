@@ -41,6 +41,7 @@ public class SearchViewFragment extends Fragment {
     View view;
     DatabaseHelper db;
     SearchView searchView;
+    private String currentFilterText = "";
 
 
     public SearchViewFragment(){}
@@ -61,8 +62,11 @@ public class SearchViewFragment extends Fragment {
         searchView = (SearchView) searchButton.getActionView();
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
+
+
             @Override
             public boolean onQueryTextSubmit(String query) {
+                currentFilterText = query;
                 if(query.equals(""))
                     resetRouteList();
                 else
@@ -71,6 +75,7 @@ public class SearchViewFragment extends Fragment {
             }
             @Override
             public boolean onQueryTextChange(String s) {
+                currentFilterText = s;
                 if(s.equals(""))
                     resetRouteList();
                 else
@@ -143,6 +148,7 @@ public class SearchViewFragment extends Fragment {
     public void filterRouteList(String filter){
         routeRecycleAdapter.filterData(filter);
     }
+
     public void resetRouteList(){
         routeRecycleAdapter.resetData();
     }
@@ -151,9 +157,11 @@ public class SearchViewFragment extends Fragment {
     public void onResume() {
         super.onResume();
         recyclerView.requestFocus();
-//        if(db == null){
-//            db = new DatabaseHelper(getContext());
-//        }
-//        routeRecycleAdapter.updateData(db.getRoutesByArea(spinner_area.getSelectedItem().toString()));
+        if(db == null){
+            db = new DatabaseHelper(getContext());
+        }
+        routeRecycleAdapter.updateData(db.getRoutesByArea(spinner_area.getSelectedItem().toString()));
+        if (!currentFilterText.equals(""))
+            filterRouteList(currentFilterText);
     }
 }
