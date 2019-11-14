@@ -20,7 +20,6 @@ import com.dex.teufelsturmoffline.database.DatabaseHelper;
 import com.dex.teufelsturmoffline.model.Route;
 
 import java.util.List;
-import java.util.zip.Inflater;
 
 public class DialogRouteListFragment extends DialogFragment implements View.OnClickListener {
 

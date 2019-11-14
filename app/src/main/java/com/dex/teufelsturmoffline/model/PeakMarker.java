@@ -69,17 +69,19 @@ public class PeakMarker extends Marker {
             return;
         }
 
-        if (this.paintText != null && (int) zoomLevel > 16) {
+        canvas.drawBitmap(this.getBitmap(), left, top);
+
+       if (this.paintText != null && (int) zoomLevel > 16) {
             String text = this.peak.getTt_name();
-            canvas.drawLine(0,0,40,40, this.paintText);
+  //          canvas.drawLine(0,0,40,40, this.paintText);
             canvas.drawText(text, left + this.getBitmap().getWidth() , top + halfBitmapHeight + 20, this.paintText);
-            canvas.drawCircle(left+halfBitmapWidth,top+halfBitmapWidth,halfBitmapWidth, paintMarker);
-            canvas.drawCircle(left+halfBitmapWidth,top+halfBitmapWidth,halfBitmapWidth, paintOutline);
+  //          canvas.drawCircle(left+halfBitmapWidth,top+halfBitmapWidth,halfBitmapWidth, paintMarker);
+  //          canvas.drawCircle(left+halfBitmapWidth,top+halfBitmapWidth,halfBitmapWidth, paintOutline);
         }
 
-        if (this.paintText != null && (int) zoomLevel <= 16) {
-            canvas.drawCircle(left+halfBitmapWidth,top+halfBitmapWidth,halfBitmapWidth/2, paintMarker);
-            canvas.drawCircle(left+halfBitmapWidth,top+halfBitmapWidth,halfBitmapWidth/2, paintOutline);
-        }
+ //       if (this.paintText != null && (int) zoomLevel <= 16) {
+ //           canvas.drawCircle(left+halfBitmapWidth,top+halfBitmapWidth,halfBitmapWidth/2, paintMarker);
+ //           canvas.drawCircle(left+halfBitmapWidth,top+halfBitmapWidth,halfBitmapWidth/2, paintOutline);
+        //}
     }
 }

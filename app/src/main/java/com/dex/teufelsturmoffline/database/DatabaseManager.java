@@ -17,7 +17,7 @@ public class DatabaseManager {
     Context context;
     final String internalDBPath;
     final String internalFilePath;
-    final String mapName = "ss.map";
+    final String mapName = "sn.map";
 
     public DatabaseManager(Context context) {
         this.context = context;
