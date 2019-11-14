@@ -33,4 +33,8 @@ dependencies {
     implementation 'com.android.support:design:28.0.0'
     implementation 'com.android.support:support-v4:28.0.0'
     implementation 'org.jsoup:jsoup:1.11.3'
+    //Map Forge
+    implementation 'org.mapsforge:mapsforge-map-android:0.11.0'
+    implementation 'org.mapsforge:mapsforge-themes:0.11.0'
+    implementation 'com.caverock:androidsvg:1.3'
 }

@@ -43,7 +43,7 @@
         android:layout_marginStart="24dp"
         android:layout_marginLeft="24dp"
         android:layout_marginTop="16dp"
-        android:text="Datenbank löschen"
+        android:text="Datenbank"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
@@ -120,7 +120,7 @@
         android:layout_marginLeft="24dp"
         android:layout_marginTop="8dp"
         android:enabled="false"
-        android:text="DB leeren"
+        android:text="DB Reset"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
@@ -198,5 +198,15 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button_empty_db" />
+
+    <Button
+        android:id="@+id/button_export_db"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="DB Export"
+        app:layout_constraintEnd_toStartOf="@+id/button_del_db"
+        app:layout_constraintStart_toEndOf="@+id/button_empty_db"
+        app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
 </android.support.constraint.ConstraintLayout>

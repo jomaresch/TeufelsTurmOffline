@@ -1,29 +1,32 @@
 package com.dex.teufelsturmoffline.activities;
 
-import android.app.Activity;
+import android.Manifest;
 import android.app.AlertDialog;
+import android.content.pm.PackageManager;
 import android.os.AsyncTask;
+import android.os.Environment;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.dex.teufelsturmoffline.R;
 import com.dex.teufelsturmoffline.database.DatabaseHelper;
+import com.dex.teufelsturmoffline.database.DatabaseManager;
 import com.dex.teufelsturmoffline.network.HttpTask;
 
-import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.io.OutputStream;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -32,6 +35,11 @@ public class SettingsActivity extends AppCompatActivity {
     private ImageView infoIcon;
     private TextView infoTextIcon;
     private DatabaseHelper db;
+    private static final int WRITE_REQUEST_CODE = 43;
+    private DatabaseManager databaseManager = new DatabaseManager(this);
+
+
+    private String mimeType = "application/x-sqlite3";
 
 
     @Override
@@ -50,9 +58,9 @@ public class SettingsActivity extends AppCompatActivity {
 
         TextView infoText = findViewById(R.id.text_setting_db_info);
         infoText.setText("Anzahl der Gipfel: " + countMountain +
-        "\nAnzahl der Routen: "+ countRoutes +
-        "\nAnzahl der Kommentare: "+ countComments +
-        "\nLetztes Kommentar vom: " + lastComments);
+                "\nAnzahl der Routen: " + countRoutes +
+                "\nAnzahl der Kommentare: " + countComments +
+                "\nLetztes Kommentar vom: " + lastComments);
 
         Button button = findViewById(R.id.button_settings_run);
         Button buttonDel = findViewById(R.id.button_del_db);
@@ -69,6 +77,14 @@ public class SettingsActivity extends AppCompatActivity {
             public void onClick(View v) {
                 File database = getApplicationContext().getDatabasePath(DatabaseHelper.DB_NAME);
                 database.delete();
+            }
+        });
+
+        Button buttonExport = findViewById(R.id.button_export_db);
+        buttonExport.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                    checkAndRequestPermission();
             }
         });
 
@@ -98,14 +114,14 @@ public class SettingsActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        if(httpTask == null){
+        if (httpTask == null) {
             return;
         }
-        if(httpTask.getStatus() == AsyncTask.Status.RUNNING)
+        if (httpTask.getStatus() == AsyncTask.Status.RUNNING)
             httpTask.cancel(false);
     }
 
-    private void dialog(){
+    private void dialog() {
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
         alert.setTitle("INFO");
         alert.setMessage(
@@ -114,7 +130,33 @@ public class SettingsActivity extends AppCompatActivity {
                         "Damit die Seite nicht überlastet wird, wartet die App 3 Sekunden lang zwischen den Anfragen." +
                         "Dies verlängert zwar das Herunterladen, ist aber besser für die Seite :)"
         );
-        alert.setPositiveButton("OK",null);
+        alert.setPositiveButton("OK", null);
         alert.show();
     }
+
+    private void checkAndRequestPermission() {
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    WRITE_REQUEST_CODE);
+        } else{
+            databaseManager.exportDatabase();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case WRITE_REQUEST_CODE:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    databaseManager.exportDatabase();
+                } else {
+                    Toast.makeText(this, "Permission Denied!", Toast.LENGTH_SHORT).show();
+                }
+        }
+    }
+
 }

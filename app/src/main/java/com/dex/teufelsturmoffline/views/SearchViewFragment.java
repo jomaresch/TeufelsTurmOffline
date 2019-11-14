@@ -3,6 +3,7 @@ package com.dex.teufelsturmoffline.views;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -21,6 +22,7 @@ import android.widget.Toast;
 
 import com.dex.teufelsturmoffline.R;
 import com.dex.teufelsturmoffline.activities.CommentActivity;
+import com.dex.teufelsturmoffline.activities.MapActivity;
 import com.dex.teufelsturmoffline.adapter.RouteRecycleAdapter;
 import com.dex.teufelsturmoffline.adapter.SpinnerAreaAdapter;
 import com.dex.teufelsturmoffline.database.DatabaseHelper;
@@ -34,7 +36,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class SearchViewFragment extends Fragment {
+public class SearchViewFragment extends Fragment implements View.OnClickListener {
     Spinner spinner_area;
     RecyclerView recyclerView;
     RouteRecycleAdapter routeRecycleAdapter;
@@ -42,6 +44,9 @@ public class SearchViewFragment extends Fragment {
     DatabaseHelper db;
     SearchView searchView;
     private String currentFilterText = "";
+
+
+    FloatingActionButton fab_map;
 
 
     public SearchViewFragment(){}
@@ -84,6 +89,10 @@ public class SearchViewFragment extends Fragment {
             }
         });
         super.onCreateOptionsMenu(menu, inflater);
+
+        fab_map = view.findViewById(R.id.fab_map);
+        fab_map.setOnClickListener(this);
+
     }
 
     @Override
@@ -163,5 +172,11 @@ public class SearchViewFragment extends Fragment {
         routeRecycleAdapter.updateData(db.getRoutesByArea(spinner_area.getSelectedItem().toString()));
         if (!currentFilterText.equals(""))
             filterRouteList(currentFilterText);
+    }
+
+    @Override
+    public void onClick(View view) {
+        Intent intent = new Intent(view.getContext(), MapActivity.class);
+        startActivity(intent);
     }
 }

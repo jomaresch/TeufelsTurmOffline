@@ -9,6 +9,7 @@ import android.util.Pair;
 
 
 import com.dex.teufelsturmoffline.model.Comment;
+import com.dex.teufelsturmoffline.model.Peak;
 import com.dex.teufelsturmoffline.model.Route;
 
 import java.text.DateFormat;
@@ -23,6 +24,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public final static String DB_NAME = "otto.db";
     public final static String TABLE_ROUTES = "ROUTES";
     public final static String TABLE_COMMENTS = "COMMENTS";
+    public final static String TABLE_PEAKS = "PEAKS";
     public final static String TABLE_MY_COMMENTS = "MY_COMMENTS";
 
 
@@ -92,6 +94,23 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         SQLiteDatabase db = this.getReadableDatabase();
         String sqlStatement = "SELECT * FROM " + TABLE_ROUTES + " WHERE FAV == 1";
+        Cursor cursor = db.rawQuery(sqlStatement, null);
+
+        while (cursor.moveToNext()) {
+            Route route = getRouteFromCursor(cursor);
+            routesList.add(route);
+        }
+
+        db.close();
+        return routesList;
+    }
+
+    public List<Route> getPeakRoutes(String peak) {
+
+        List routesList = new ArrayList<Route>();
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        String sqlStatement = "SELECT * FROM " + TABLE_ROUTES + " WHERE MOUNTAIN == '"+ peak+"'";
         Cursor cursor = db.rawQuery(sqlStatement, null);
 
         while (cursor.moveToNext()) {
@@ -324,6 +343,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
         db.close();
         return routes;
+    }
+
+    public List<Peak> getAllPeaks(){
+        SQLiteDatabase db = this.getReadableDatabase();
+        String sqlStatement = "SELECT * FROM " + TABLE_PEAKS;
+        Cursor c = db.rawQuery(sqlStatement, null);
+        List<Peak> peakList = new ArrayList<>();
+        while (c.moveToNext()){
+            peakList.add(new Peak(c.getString(0), c.getString(2), c.getDouble(3), c.getDouble(4),  c.getString(5)));
+        }
+        c.close();
+        db.close();
+        return peakList;
     }
 
 
