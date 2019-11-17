@@ -16,6 +16,7 @@ import com.dex.teufelsturmoffline.model.Route;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -143,7 +144,9 @@ public class RouteRecycleAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         List<Route> tempList = new ArrayList<>();
         for (Route route : this.originalRouteList){
             if (route.getName().toLowerCase().contains(filter) ||
-                    route.getMountain().toLowerCase().contains(filter)){
+                route.getMountain().toLowerCase().contains(filter) ||
+                route.getPeak_id().equals(filter)){
+
                 tempList.add(route);
             }
         }
@@ -155,17 +158,28 @@ public class RouteRecycleAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         Map<String,List<Route>> map = new HashMap<>();
         List<Pair<Integer,Route>> resultList = new ArrayList<>();
         for(Route route: list){
-            if(map.containsKey(route.getMountain())){
-                map.get(route.getMountain()).add(route);
+            String m_label = route.getPeak_id() +" "+route.getMountain();
+            if(map.containsKey(m_label)){
+                map.get(m_label).add(route);
             } else {
                 List<Route> sublist = new ArrayList<>();
                 sublist.add(route);
-                map.put(route.getMountain(),sublist);
+                map.put(m_label,sublist);
             }
         }
         List<String> keys = new ArrayList<>();
         keys.addAll(map.keySet());
-        Collections.sort(keys);
+        Collections.sort(keys, new Comparator<String>() {
+            public int compare(String o1, String o2) {
+                return extractInt(o1) - extractInt(o2);
+            }
+
+            int extractInt(String s) {
+                String num = s.replaceAll("\\D", "");
+                // return 0 if no digits found
+                return num.isEmpty() ? 0 : Integer.parseInt(num);
+            }
+        });
         for(String mountain: keys){
             Route fakeRoute = new Route();
             fakeRoute.setMountain(mountain);

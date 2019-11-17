@@ -30,23 +30,26 @@ public class SpinnerAreaAdapter extends ArrayAdapter<AreaSpinnerData> {
 
     @Override
     public View getView(int position, View convertView,ViewGroup parent) {
-        return spinnerView(position, convertView, parent);
-    }
-
-    @Override
-    public View getDropDownView(int position, View convertView,ViewGroup parent) {
-        return spinnerView(position, convertView, parent);
-    }
-
-    private View spinnerView(int pos, View view, ViewGroup parent){
         LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
         View customView = layoutInflater.inflate(R.layout.row_spinner_area,parent,false);
         TextView textView = customView.findViewById(R.id.text_row_spinner_area_area);
         TextView textViewRoutes = customView.findViewById(R.id.text_row_spinner_area_routes);
-        textView.setText(dataList.get(pos).getArea());
-        textViewRoutes.setText("Wege: " + String.valueOf(dataList.get(pos).getRouteCount()));
+        textView.setText(dataList.get(position).getArea());
+        textViewRoutes.setText("Wege: " + String.valueOf(dataList.get(position).getRouteCount()));
         return customView;
     }
+
+    @Override
+    public View getDropDownView(int position, View convertView,ViewGroup parent) {
+        LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
+        View customView = layoutInflater.inflate(R.layout.row_spinner_area_item,parent,false);
+        TextView textView = customView.findViewById(R.id.text_spinner_item_area);
+        TextView textViewRoutes = customView.findViewById(R.id.text_spinner_item_amount);
+        textView.setText(dataList.get(position).getArea());
+        textViewRoutes.setText("Wege: " + String.valueOf(dataList.get(position).getRouteCount()));
+        return customView;
+    }
+
 
 
 }

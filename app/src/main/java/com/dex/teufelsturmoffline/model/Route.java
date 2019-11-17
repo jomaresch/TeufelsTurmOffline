@@ -1,7 +1,22 @@
 package com.dex.teufelsturmoffline.model;
 
 public class Route implements Comparable<Route>{
-    private String name, id, mountain, scale, area, date;
+    private String name;
+    private String id;
+    private String mountain;
+    private String scale;
+    private String area;
+    private String date;
+
+    public String getPeak_id() {
+        return peak_id;
+    }
+
+    public void setPeak_id(String peak_id) {
+        this.peak_id = peak_id;
+    }
+
+    private String peak_id;
     private int rating, fav, done;
 
     public String getName() {
@@ -111,6 +126,12 @@ public class Route implements Comparable<Route>{
 
     @Override
     public int compareTo(Route o) {
-        return this.getMountain().compareTo(o.getMountain());
+        return extractInt(this.getMountain()) - extractInt(o.getMountain());
+    }
+
+    private int extractInt(String s) {
+        String num = s.replaceAll("\\D", "");
+        // return 0 if no digits found
+        return num.isEmpty() ? 0 : Integer.parseInt(num);
     }
 }

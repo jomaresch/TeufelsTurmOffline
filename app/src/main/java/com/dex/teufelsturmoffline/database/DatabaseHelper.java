@@ -45,7 +45,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         List routeList = new ArrayList<Route>();
 
         SQLiteDatabase db = this.getReadableDatabase();
-        String sqlStatement = "SELECT * FROM " + TABLE_ROUTES + " WHERE AREA == '" + area + "'";
+        String sqlStatement = "SELECT * FROM " + TABLE_ROUTES + " LEFT JOIN "+TABLE_PEAKS+" ON "+TABLE_PEAKS+".TT_NAME = "+TABLE_ROUTES+".MOUNTAIN WHERE AREA == '" + area + "'";
         Cursor cursor = db.rawQuery(sqlStatement, null);
 
         while (cursor.moveToNext()) {
@@ -239,7 +239,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     private Route getRouteFromCursor(Cursor cursor) {
-        return new Route(
+        Route r = new Route(
                 cursor.getString(1),
                 cursor.getString(0),
                 cursor.getString(2),
@@ -250,6 +250,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 cursor.getInt(7),
                 cursor.getInt(8)
         );
+        if( cursor.getColumnCount() > 9){
+            r.setPeak_id(cursor.getString(15));
+        }
+        return r;
     }
 
     public String countRoutes() {
