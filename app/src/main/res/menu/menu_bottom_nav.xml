@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/menu_page_map"
+        android:enabled="true"
+        android:icon="@drawable/map_icon_alt"
+        android:title="Karte"/>
+    <item
+        android:id="@+id/menu_page_routes"
+        android:enabled="true"
+        android:icon="@drawable/mountain"
+        android:title="Wege"/>
+    <item
+        android:id="@+id/menu_page_book"
+        android:enabled="true"
+        android:icon="@drawable/map_icon_alt"
+        android:title="Fahrtenbuch"/>
+
+</menu>

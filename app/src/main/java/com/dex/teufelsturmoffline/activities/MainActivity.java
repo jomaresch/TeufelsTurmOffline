@@ -1,37 +1,29 @@
 package com.dex.teufelsturmoffline.activities;
 
-import android.content.Context;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.content.Intent;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.TabLayout;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.Toast;
 
 import com.dex.teufelsturmoffline.R;
 import com.dex.teufelsturmoffline.adapter.ViewPagerAdapter;
-import com.dex.teufelsturmoffline.database.DatabaseHelper;
 import com.dex.teufelsturmoffline.database.DatabaseManager;
 import com.dex.teufelsturmoffline.views.DoneViewFragment;
 import com.dex.teufelsturmoffline.views.FavoritesViewFragment;
 import com.dex.teufelsturmoffline.views.SearchViewFragment;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-
-public class MainActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener{
+public class MainActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener, BottomNavigationView.OnNavigationItemSelectedListener {
 
     SearchViewFragment searchViewFragment;
     DatabaseManager databaseManager;
+    BottomNavigationView bottomNavigation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,18 +40,14 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
 
 
 
-        ViewPager viewPager = findViewById(R.id.pager);
+        bottomNavigation = findViewById(R.id.bottom_navigation_view);
+        bottomNavigation.setOnNavigationItemSelectedListener(this);
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
 
         searchViewFragment = new SearchViewFragment();
         adapter.addFragment(searchViewFragment, getString(R.string.tab_search));
         adapter.addFragment(new FavoritesViewFragment(), getString(R.string.tab_favorites));
         adapter.addFragment(new DoneViewFragment(), getString(R.string.tab_done));
-        viewPager.setAdapter(adapter);
-        viewPager.addOnPageChangeListener(this);
-
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
-        tabLayout.setupWithViewPager(viewPager);
     }
 
     @Override
@@ -101,5 +89,29 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
     public void onPageScrollStateChanged(int i) {
     }
 
+    private void openFragment(Fragment fragment) {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.container, fragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
+    }
 
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+        switch (menuItem.getItemId()) {
+            case R.id.menu_page_map : {
+                openFragment(new FavoritesViewFragment());
+                return true;
+            }
+            case R.id.menu_page_routes : {
+                openFragment(new SearchViewFragment());
+                return true;
+            }
+            case R.id.menu_page_book : {
+                openFragment(new DoneViewFragment());
+                return true;
+            }
+        }
+        return false;
+    }
 }
