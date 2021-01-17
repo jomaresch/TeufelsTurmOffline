@@ -34,6 +34,12 @@ public class LicenceActivity extends AppCompatActivity implements View.OnClickLi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_licence);
         android_id = Secure.getString(this.getContentResolver(),Secure.ANDROID_ID);
+
+        String shouldKey = md5(android_id);
+        if (shouldKey.equals(SettingsSaver.getKey(this))){
+            openMainActivity();
+        }
+
         buttonCopyId = findViewById(R.id.button_copy_device_id);
         buttonCopyId.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -50,12 +56,6 @@ public class LicenceActivity extends AppCompatActivity implements View.OnClickLi
 
         deviceId.setText(android_id);
         buttonApply.setOnClickListener(this);
-        //System.out.println(md5(android_id));
-
-        String shouldKey = md5(android_id);
-        if (shouldKey.equals(SettingsSaver.getKey(this))){
-            openMainActivity();
-        }
 
     }
 
