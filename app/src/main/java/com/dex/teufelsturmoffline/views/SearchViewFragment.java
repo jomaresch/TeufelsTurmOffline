@@ -17,12 +17,10 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.SearchView;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 
 import com.dex.teufelsturmoffline.R;
 import com.dex.teufelsturmoffline.activities.CommentActivity;
-import com.dex.teufelsturmoffline.activities.MapActivity;
 import com.dex.teufelsturmoffline.adapter.RouteRecycleAdapter;
 import com.dex.teufelsturmoffline.adapter.SpinnerAreaAdapter;
 import com.dex.teufelsturmoffline.database.DatabaseHelper;
@@ -30,13 +28,11 @@ import com.dex.teufelsturmoffline.database.SettingsSaver;
 import com.dex.teufelsturmoffline.model.AreaSpinnerData;
 import com.dex.teufelsturmoffline.model.Route;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class SearchViewFragment extends Fragment implements View.OnClickListener {
+public class SearchViewFragment extends Fragment {
     Spinner spinner_area;
     RecyclerView recyclerView;
     RouteRecycleAdapter routeRecycleAdapter;
@@ -89,10 +85,6 @@ public class SearchViewFragment extends Fragment implements View.OnClickListener
             }
         });
         super.onCreateOptionsMenu(menu, inflater);
-
-        fab_map = view.findViewById(R.id.fab_map);
-        fab_map.setOnClickListener(this);
-
     }
 
     @Override
@@ -172,11 +164,5 @@ public class SearchViewFragment extends Fragment implements View.OnClickListener
         routeRecycleAdapter.updateData(db.getRoutesByArea(spinner_area.getSelectedItem().toString()));
         if (!currentFilterText.equals(""))
             filterRouteList(currentFilterText);
-    }
-
-    @Override
-    public void onClick(View view) {
-        Intent intent = new Intent(view.getContext(), MapActivity.class);
-        startActivity(intent);
     }
 }

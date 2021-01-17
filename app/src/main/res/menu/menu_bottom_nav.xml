@@ -14,7 +14,7 @@
     <item
         android:id="@+id/menu_page_book"
         android:enabled="true"
-        android:icon="@drawable/map_icon_alt"
+        android:icon="@drawable/book"
         android:title="Fahrtenbuch"/>
 
 </menu>

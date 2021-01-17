@@ -17,13 +17,17 @@ import com.dex.teufelsturmoffline.adapter.ViewPagerAdapter;
 import com.dex.teufelsturmoffline.database.DatabaseManager;
 import com.dex.teufelsturmoffline.views.DoneViewFragment;
 import com.dex.teufelsturmoffline.views.FavoritesViewFragment;
+import com.dex.teufelsturmoffline.views.MapViewFragment;
 import com.dex.teufelsturmoffline.views.SearchViewFragment;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener, BottomNavigationView.OnNavigationItemSelectedListener {
 
-    SearchViewFragment searchViewFragment;
     DatabaseManager databaseManager;
     BottomNavigationView bottomNavigation;
+    ArrayList<Fragment> fragmentList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,23 +35,19 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
         databaseManager = new DatabaseManager(this);
 
         databaseManager.createDirectories();
-        if(!databaseManager.doDbExists())
+        if (!databaseManager.doDbExists())
             databaseManager.copyDatabase();
         if (!databaseManager.doMapExists())
             databaseManager.copyMap();
 
         setContentView(R.layout.activity_main);
 
-
-
         bottomNavigation = findViewById(R.id.bottom_navigation_view);
         bottomNavigation.setOnNavigationItemSelectedListener(this);
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
 
-        searchViewFragment = new SearchViewFragment();
-        adapter.addFragment(searchViewFragment, getString(R.string.tab_search));
-        adapter.addFragment(new FavoritesViewFragment(), getString(R.string.tab_favorites));
-        adapter.addFragment(new DoneViewFragment(), getString(R.string.tab_done));
+        fragmentList.add(new MapViewFragment());
+        fragmentList.add(new SearchViewFragment());
+        fragmentList.add(new FavoritesViewFragment());
     }
 
     @Override
@@ -80,9 +80,6 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
 
     @Override
     public void onPageSelected(int i) {
-        if (i == 0) {
-            searchViewFragment.resetRouteList();
-        }
     }
 
     @Override
@@ -99,16 +96,16 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         switch (menuItem.getItemId()) {
-            case R.id.menu_page_map : {
-                openFragment(new FavoritesViewFragment());
+            case R.id.menu_page_map: {
+                openFragment(fragmentList.get(0));
                 return true;
             }
-            case R.id.menu_page_routes : {
-                openFragment(new SearchViewFragment());
+            case R.id.menu_page_routes: {
+                openFragment(fragmentList.get(1));
                 return true;
             }
-            case R.id.menu_page_book : {
-                openFragment(new DoneViewFragment());
+            case R.id.menu_page_book: {
+                openFragment(fragmentList.get(2));
                 return true;
             }
         }
