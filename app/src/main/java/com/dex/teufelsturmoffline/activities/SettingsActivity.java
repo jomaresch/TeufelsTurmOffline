@@ -31,7 +31,7 @@ import java.io.OutputStream;
 public class SettingsActivity extends AppCompatActivity {
 
     private HttpTask httpTask;
-    private final int NUMBER_ROUTES = 100;
+    private final int NUMBER_ROUTES = 500;
     private ImageView infoIcon;
     private TextView infoTextIcon;
     private DatabaseHelper db;

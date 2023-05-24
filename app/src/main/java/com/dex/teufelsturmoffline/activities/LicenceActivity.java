@@ -20,8 +20,6 @@ import android.widget.Toast;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-import static java.security.AccessController.getContext;
-
 public class LicenceActivity extends AppCompatActivity implements View.OnClickListener {
 
     private String android_id = "";

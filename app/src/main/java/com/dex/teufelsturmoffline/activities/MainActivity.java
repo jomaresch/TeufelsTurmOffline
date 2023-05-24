@@ -48,6 +48,10 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
         fragmentList.add(new MapViewFragment());
         fragmentList.add(new SearchViewFragment());
         fragmentList.add(new FavoritesViewFragment());
+
+        if (getSupportFragmentManager().findFragmentById(R.id.container) == null){
+            bottomNavigation.setSelectedItemId(R.id.menu_page_routes);
+        }
     }
 
     @Override
