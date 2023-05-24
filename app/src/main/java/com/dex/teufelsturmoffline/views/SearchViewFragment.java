@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Pair;
+import android.util.TimingLogger;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -51,7 +52,10 @@ public class SearchViewFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+        TimingLogger timings = new TimingLogger("something", "methodCreate");
         db = new DatabaseHelper(getContext());
+        timings.addSplit("f");
+        timings.dumpToLog();
     }
 
 
@@ -89,6 +93,7 @@ public class SearchViewFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        TimingLogger timings = new TimingLogger("something", "methodA");
         view = inflater.inflate(R.layout.fragment_search_view, container, false);
         recyclerView = view.findViewById(R.id.recyclerView_routes);
         spinner_area = view.findViewById(R.id.spinner_area);
@@ -120,7 +125,9 @@ public class SearchViewFragment extends Fragment {
 
         List<Route> routeList = new ArrayList<>();
         if(spinnerData.size() > 0 ){
+            timings.addSplit("1");
             routeList = db.getRoutesByArea(spinnerData.get(0).getArea());
+            timings.addSplit("2");
         }
         LinearLayoutManager mLinearLayoutManager = new LinearLayoutManager(getActivity(),
                 LinearLayoutManager.VERTICAL, false);
@@ -132,11 +139,11 @@ public class SearchViewFragment extends Fragment {
                 startActivity(intent);
             }
         });
-
+        timings.addSplit("3");
         recyclerView.setLayoutManager(mLinearLayoutManager);
         recyclerView.setAdapter(routeRecycleAdapter);
-
-
+        timings.addSplit("4");
+        timings.dumpToLog();
 
         return view;
     }

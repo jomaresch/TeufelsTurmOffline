@@ -8,12 +8,14 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.TimingLogger;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import com.dex.teufelsturmoffline.R;
 import com.dex.teufelsturmoffline.adapter.ViewPagerAdapter;
+import com.dex.teufelsturmoffline.database.DatabaseHelper;
 import com.dex.teufelsturmoffline.database.DatabaseManager;
 import com.dex.teufelsturmoffline.views.DoneViewFragment;
 import com.dex.teufelsturmoffline.views.FavoritesViewFragment;
@@ -39,6 +41,8 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
             databaseManager.copyDatabase();
         if (!databaseManager.doMapExists())
             databaseManager.copyMap();
+        DatabaseHelper dbh = new DatabaseHelper(this);
+        dbh.checkDBUpgrade();
 
         setContentView(R.layout.activity_main);
 

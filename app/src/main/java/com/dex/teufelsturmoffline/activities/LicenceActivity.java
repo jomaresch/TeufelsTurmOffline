@@ -36,8 +36,8 @@ public class LicenceActivity extends AppCompatActivity implements View.OnClickLi
         android_id = Secure.getString(this.getContentResolver(),Secure.ANDROID_ID);
 
         String shouldKey = md5(android_id);
+        openMainActivity();
         if (shouldKey.equals(SettingsSaver.getKey(this))){
-            openMainActivity();
         }
 
         buttonCopyId = findViewById(R.id.button_copy_device_id);

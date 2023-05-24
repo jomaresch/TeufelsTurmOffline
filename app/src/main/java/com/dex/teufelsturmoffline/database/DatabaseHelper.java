@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.provider.Settings;
 import android.util.Pair;
 
 
@@ -42,7 +43,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public List<Route> getRoutesByArea(String area) {
 
-        List routeList = new ArrayList<Route>();
+        List<Route> routeList = new ArrayList<Route>();
 
         SQLiteDatabase db = this.getReadableDatabase();
         String sqlStatement = "SELECT * FROM " + TABLE_ROUTES + " LEFT JOIN "+TABLE_PEAKS+" ON "+TABLE_PEAKS+".TT_NAME = "+TABLE_ROUTES+".MOUNTAIN WHERE AREA == '" + area + "'";
@@ -57,7 +58,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public List<Pair<String, Integer>> getAreas() {
-        List areaList = new ArrayList<Pair<String, Integer>>();
+        List<Pair<String, Integer>> areaList = new ArrayList<Pair<String, Integer>>();
         SQLiteDatabase db = this.getReadableDatabase();
         String sqlStatement = "SELECT DISTINCT AREA, COUNT(AREA) FROM " + TABLE_ROUTES + " GROUP BY AREA";
         Cursor cursor = db.rawQuery(sqlStatement, null);
@@ -73,7 +74,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public List<Comment> getCommentByRoute(String id) {
 
-        List commentList = new ArrayList<Comment>();
+        List<Comment> commentList = new ArrayList<Comment>();
 
         SQLiteDatabase db = this.getReadableDatabase();
         String sqlStatement = "SELECT * FROM " + TABLE_COMMENTS + " WHERE ROUTE_ID == '" + id + "'";
@@ -90,7 +91,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public List<Route> getFavRoutes() {
 
-        List routesList = new ArrayList<Route>();
+        List<Route> routesList = new ArrayList<Route>();
 
         SQLiteDatabase db = this.getReadableDatabase();
         String sqlStatement = "SELECT * FROM " + TABLE_ROUTES + " WHERE FAV == 1";
@@ -107,7 +108,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public List<Route> getPeakRoutes(String peak) {
 
-        List routesList = new ArrayList<Route>();
+        List<Route> routesList = new ArrayList<Route>();
 
         SQLiteDatabase db = this.getReadableDatabase();
         String sqlStatement = "SELECT * FROM " + TABLE_ROUTES + " WHERE MOUNTAIN == '"+ peak+"'";
@@ -362,5 +363,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return peakList;
     }
 
-
+    public void checkDBUpgrade() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT name FROM sqlite_master WHERE type='index'";
+        Cursor cursor = db.rawQuery(query, null);
+        while (cursor.moveToNext()) {
+            System.out.println(cursor.getString(0));
+        }
+        cursor.close();
+        db.close();
+    }
 }
