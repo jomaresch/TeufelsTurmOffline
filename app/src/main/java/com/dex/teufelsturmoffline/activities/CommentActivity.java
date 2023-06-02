@@ -1,29 +1,21 @@
 package com.dex.teufelsturmoffline.activities;
 
-import android.app.FragmentTransaction;
 import android.content.Intent;
-import android.support.design.widget.TabLayout;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
+import com.google.android.material.tabs.TabLayout;
+import androidx.viewpager.widget.ViewPager;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dex.teufelsturmoffline.R;
-import com.dex.teufelsturmoffline.adapter.CommentRecycleAdapter;
-import com.dex.teufelsturmoffline.adapter.RouteRecycleAdapter;
 import com.dex.teufelsturmoffline.adapter.ViewPagerAdapter;
 import com.dex.teufelsturmoffline.database.DatabaseHelper;
-import com.dex.teufelsturmoffline.model.Comment;
 import com.dex.teufelsturmoffline.model.Route;
 import com.dex.teufelsturmoffline.views.MYCommentFragment;
 import com.dex.teufelsturmoffline.views.TTCommentFragment;
-
-import java.util.List;
 
 public class CommentActivity extends AppCompatActivity {
 

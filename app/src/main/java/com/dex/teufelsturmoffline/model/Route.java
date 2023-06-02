@@ -9,6 +9,8 @@ public class Route implements Comparable<Route>{
     private String date;
 
     public String getPeak_id() {
+        if (peak_id == null)
+            return "";
         return peak_id;
     }
 

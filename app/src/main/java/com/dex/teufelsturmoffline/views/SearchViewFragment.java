@@ -3,10 +3,13 @@ package com.dex.teufelsturmoffline.views;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -45,7 +48,8 @@ public class SearchViewFragment extends Fragment {
     FloatingActionButton fab_map;
 
 
-    public SearchViewFragment(){}
+    public SearchViewFragment() {
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -55,25 +59,24 @@ public class SearchViewFragment extends Fragment {
     }
 
 
-
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.search_menu, menu);
-        MenuItem searchButton = menu.findItem( R.id.search);
+        MenuItem searchButton = menu.findItem(R.id.search);
         searchView = (SearchView) searchButton.getActionView();
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-
 
 
             @Override
             public boolean onQueryTextSubmit(String query) {
                 currentFilterText = query;
-                if(query.equals(""))
+                if (query.equals(""))
                     resetRouteList();
                 else
                     filterRouteList(query);
                 return false;
             }
+
             @Override
             public boolean onQueryTextChange(String s) {
                 currentFilterText = s;
@@ -97,8 +100,8 @@ public class SearchViewFragment extends Fragment {
         List<Pair<String, Integer>> areaPairs = db.getAreas();
         List<AreaSpinnerData> spinnerData = new ArrayList<>();
 
-        for (Pair<String, Integer> pair : areaPairs){
-            spinnerData.add(new AreaSpinnerData(pair.first,pair.second));
+        for (Pair<String, Integer> pair : areaPairs) {
+            spinnerData.add(new AreaSpinnerData(pair.first, pair.second));
         }
 
         SpinnerAreaAdapter spinnerAreaAdapter = new SpinnerAreaAdapter(view.getContext(), R.layout.row_spinner_area, spinnerData);
@@ -119,7 +122,7 @@ public class SearchViewFragment extends Fragment {
         spinner_area.setSelection(SettingsSaver.getArea(getActivity()));
 
         List<Route> routeList = new ArrayList<>();
-        if(spinnerData.size() > 0 ){
+        if (spinnerData.size() > 0) {
             routeList = db.getRoutesByArea(spinnerData.get(0).getArea());
         }
         LinearLayoutManager mLinearLayoutManager = new LinearLayoutManager(getActivity(),
@@ -137,20 +140,20 @@ public class SearchViewFragment extends Fragment {
         recyclerView.setAdapter(routeRecycleAdapter);
 
 
-
         return view;
     }
 
-    public void updateRouteList(String area){
+    public void updateRouteList(String area) {
         List<Route> list = db.getRoutesByArea(area);
         Collections.sort(list);
         routeRecycleAdapter.updateData(list);
     }
-    public void filterRouteList(String filter){
+
+    public void filterRouteList(String filter) {
         routeRecycleAdapter.filterData(filter);
     }
 
-    public void resetRouteList(){
+    public void resetRouteList() {
         routeRecycleAdapter.resetData();
     }
 
@@ -158,7 +161,7 @@ public class SearchViewFragment extends Fragment {
     public void onResume() {
         super.onResume();
         recyclerView.requestFocus();
-        if(db == null){
+        if (db == null) {
             db = new DatabaseHelper(getContext());
         }
         routeRecycleAdapter.updateData(db.getRoutesByArea(spinner_area.getSelectedItem().toString()));

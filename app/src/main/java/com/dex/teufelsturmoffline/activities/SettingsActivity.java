@@ -4,10 +4,10 @@ import android.Manifest;
 import android.app.AlertDialog;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
-import android.os.Environment;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
+
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -21,25 +21,13 @@ import com.dex.teufelsturmoffline.database.DatabaseManager;
 import com.dex.teufelsturmoffline.network.HttpTask;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 
 public class SettingsActivity extends AppCompatActivity {
 
     private HttpTask httpTask;
-    private final int NUMBER_ROUTES = 500;
-    private ImageView infoIcon;
-    private TextView infoTextIcon;
-    private DatabaseHelper db;
+    private final int NUMBER_ROUTES = 5000;
     private static final int WRITE_REQUEST_CODE = 43;
-    private DatabaseManager databaseManager = new DatabaseManager(this);
-
-
-    private String mimeType = "application/x-sqlite3";
+    private final DatabaseManager databaseManager = new DatabaseManager(this);
 
 
     @Override
@@ -47,14 +35,14 @@ public class SettingsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setTitle("Einstellungen");
         setContentView(R.layout.activity_settings);
-        db = new DatabaseHelper(this);
+        DatabaseHelper db = new DatabaseHelper(this);
         String lastComments = db.getLastCommentDate();
         String countComments = db.countComments();
         String countRoutes = db.countRoutes();
         String countMountain = db.countMountain();
 
-        infoIcon = findViewById(R.id.icon_settings_info);
-        infoTextIcon = findViewById(R.id.text_settings_info);
+        ImageView infoIcon = findViewById(R.id.icon_settings_info);
+        TextView infoTextIcon = findViewById(R.id.text_settings_info);
 
         TextView infoText = findViewById(R.id.text_setting_db_info);
         infoText.setText("Anzahl der Gipfel: " + countMountain +

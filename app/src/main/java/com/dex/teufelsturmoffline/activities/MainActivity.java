@@ -1,27 +1,24 @@
 package com.dex.teufelsturmoffline.activities;
 
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import android.content.Intent;
-import android.support.annotation.NonNull;
-import android.support.design.widget.BottomNavigationView;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import androidx.viewpager.widget.ViewPager;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import com.dex.teufelsturmoffline.R;
-import com.dex.teufelsturmoffline.adapter.ViewPagerAdapter;
 import com.dex.teufelsturmoffline.database.DatabaseManager;
-import com.dex.teufelsturmoffline.views.DoneViewFragment;
 import com.dex.teufelsturmoffline.views.FavoritesViewFragment;
 import com.dex.teufelsturmoffline.views.MapViewFragment;
 import com.dex.teufelsturmoffline.views.SearchViewFragment;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener, BottomNavigationView.OnNavigationItemSelectedListener {
 
