@@ -1,7 +1,6 @@
 package com.dex.teufelsturmoffline.model;
 
 
-import com.dex.teufelsturmoffline.activities.MapActivity;
 import org.mapsforge.core.graphics.Bitmap;
 import org.mapsforge.core.graphics.Canvas;
 import org.mapsforge.core.graphics.Color;
@@ -17,12 +16,12 @@ import org.mapsforge.map.layer.overlay.Marker;
 
 public class PeakMarker extends Marker {
     private Peak peak;
-    private MapActivity mapActivity;
+    private MapView mapActivity;
     private Paint paintText = AndroidGraphicFactory.INSTANCE.createPaint();
     private Paint paintOutline = AndroidGraphicFactory.INSTANCE.createPaint();
     private Paint paintMarker = AndroidGraphicFactory.INSTANCE.createPaint();
 
-    public PeakMarker(LatLong latLong, Bitmap bitmap, int horizontalOffset, int verticalOffset, Peak peak, MapActivity mapActivity) {
+    public PeakMarker(LatLong latLong, Bitmap bitmap, int horizontalOffset, int verticalOffset, Peak peak, MapView mapActivity) {
         super(latLong, bitmap, horizontalOffset, verticalOffset);
         this.peak = peak;
         this.mapActivity = mapActivity;

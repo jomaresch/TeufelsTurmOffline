@@ -4,7 +4,7 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.dex.teufelsturmoffline.R;
@@ -19,8 +19,6 @@ import android.widget.Toast;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-
-import static java.security.AccessController.getContext;
 
 public class LicenceActivity extends AppCompatActivity implements View.OnClickListener {
 

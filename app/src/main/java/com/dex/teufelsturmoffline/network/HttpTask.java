@@ -2,31 +2,24 @@ package com.dex.teufelsturmoffline.network;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Application;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.os.AsyncTask;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
-import android.util.Pair;
+
+import androidx.annotation.RequiresApi;
+
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.dex.teufelsturmoffline.R;
-import com.dex.teufelsturmoffline.activities.SettingsActivity;
 import com.dex.teufelsturmoffline.database.DatabaseHelper;
 import com.dex.teufelsturmoffline.model.Comment;
 import com.dex.teufelsturmoffline.model.ModelHelper;
 import com.dex.teufelsturmoffline.model.ProcessUpdate;
 import com.dex.teufelsturmoffline.model.Route;
 
-import org.jsoup.Connection;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +35,7 @@ public class HttpTask extends AsyncTask<Integer, ProcessUpdate, String> {
     DatabaseHelper db;
     int counter;
     int newCommentsAmount;
-    int ROUTE_CRAWL_AMOUNT = 0;
+    int ROUTE_CRAWL_AMOUNT = 5000;
 
     public HttpTask(Context context) {
         this.context = context;

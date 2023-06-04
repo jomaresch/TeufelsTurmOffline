@@ -1,7 +1,7 @@
 package com.dex.teufelsturmoffline.adapter;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +11,6 @@ import android.widget.TextView;
 import com.dex.teufelsturmoffline.R;
 import com.dex.teufelsturmoffline.model.AreaSpinnerData;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class SpinnerAreaAdapter extends ArrayAdapter<AreaSpinnerData> {

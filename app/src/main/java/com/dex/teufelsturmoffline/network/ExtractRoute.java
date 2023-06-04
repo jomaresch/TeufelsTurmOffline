@@ -19,6 +19,7 @@ import java.net.InetSocketAddress;
 import java.net.MalformedURLException;
 import java.net.Proxy;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -53,6 +54,7 @@ public class ExtractRoute {
             area = element.child(5).child(0).text();
             date = parseDate(element.child(6).child(0).text());
             Route route = new Route(name,id,mountain,scale,area,date, rating,0,0);
+
             routeList.add(route);
         }
         return routeList;
@@ -136,7 +138,7 @@ public class ExtractRoute {
                 +"&abschicken=anzeigen";
 
         OutputStream os = conn.getOutputStream();
-        BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
+        BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, StandardCharsets.ISO_8859_1));
         writer.write(query);
         writer.flush();
         writer.close();
@@ -145,6 +147,6 @@ public class ExtractRoute {
         conn.connect();
 
         InputStream in = new BufferedInputStream(conn.getInputStream());
-        return Jsoup.parse(in,"ISO-8859-1", URL );
+        return Jsoup.parse(in,"UTF-8", URL );
     }
 }

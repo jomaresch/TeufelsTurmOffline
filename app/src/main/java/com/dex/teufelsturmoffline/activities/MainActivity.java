@@ -1,37 +1,30 @@
 package com.dex.teufelsturmoffline.activities;
 
-import android.content.Context;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import android.content.Intent;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.TabLayout;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import androidx.viewpager.widget.ViewPager;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.Toast;
 
 import com.dex.teufelsturmoffline.R;
-import com.dex.teufelsturmoffline.adapter.ViewPagerAdapter;
-import com.dex.teufelsturmoffline.database.DatabaseHelper;
 import com.dex.teufelsturmoffline.database.DatabaseManager;
-import com.dex.teufelsturmoffline.views.DoneViewFragment;
 import com.dex.teufelsturmoffline.views.FavoritesViewFragment;
+import com.dex.teufelsturmoffline.views.MapViewFragment;
 import com.dex.teufelsturmoffline.views.SearchViewFragment;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener{
+public class MainActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener, BottomNavigationView.OnNavigationItemSelectedListener {
 
-    SearchViewFragment searchViewFragment;
     DatabaseManager databaseManager;
+    BottomNavigationView bottomNavigation;
+    ArrayList<Fragment> fragmentList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,27 +32,23 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
         databaseManager = new DatabaseManager(this);
 
         databaseManager.createDirectories();
-        if(!databaseManager.doDbExists())
+        if (!databaseManager.doDbExists())
             databaseManager.copyDatabase();
         if (!databaseManager.doMapExists())
             databaseManager.copyMap();
 
         setContentView(R.layout.activity_main);
 
+        bottomNavigation = findViewById(R.id.bottom_navigation_view);
+        bottomNavigation.setOnNavigationItemSelectedListener(this);
 
+        fragmentList.add(new MapViewFragment());
+        fragmentList.add(new SearchViewFragment());
+        fragmentList.add(new FavoritesViewFragment());
 
-        ViewPager viewPager = findViewById(R.id.pager);
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-
-        searchViewFragment = new SearchViewFragment();
-        adapter.addFragment(searchViewFragment, getString(R.string.tab_search));
-        adapter.addFragment(new FavoritesViewFragment(), getString(R.string.tab_favorites));
-        adapter.addFragment(new DoneViewFragment(), getString(R.string.tab_done));
-        viewPager.setAdapter(adapter);
-        viewPager.addOnPageChangeListener(this);
-
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
-        tabLayout.setupWithViewPager(viewPager);
+        if (getSupportFragmentManager().findFragmentById(R.id.container) == null){
+            bottomNavigation.setSelectedItemId(R.id.menu_page_routes);
+        }
     }
 
     @Override
@@ -92,14 +81,35 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
 
     @Override
     public void onPageSelected(int i) {
-        if (i == 0) {
-            searchViewFragment.resetRouteList();
-        }
     }
 
     @Override
     public void onPageScrollStateChanged(int i) {
     }
 
+    private void openFragment(Fragment fragment) {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.container, fragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
+    }
 
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+        switch (menuItem.getItemId()) {
+            case R.id.menu_page_map: {
+                openFragment(fragmentList.get(0));
+                return true;
+            }
+            case R.id.menu_page_routes: {
+                openFragment(fragmentList.get(1));
+                return true;
+            }
+            case R.id.menu_page_book: {
+                openFragment(fragmentList.get(2));
+                return true;
+            }
+        }
+        return false;
+    }
 }

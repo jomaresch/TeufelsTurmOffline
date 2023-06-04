@@ -2,10 +2,7 @@ package com.dex.teufelsturmoffline.database;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentTransaction;
-
-import com.dex.teufelsturmoffline.R;
+import androidx.fragment.app.FragmentActivity;
 
 import org.mapsforge.core.model.LatLong;
 
